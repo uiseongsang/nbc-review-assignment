@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         Boolean userCheck = userRepository.existsAllByNickname(requestDto.getNickname());
 
-        if(userCheck) {
+        if (userCheck) {
             throw new IllegalArgumentException(
                     messageSource.getMessage(
                             "duplicated.nickname",
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
             );
         }
 
-        if(!requestDto.getPassword().equals(requestDto.getConfirmedPassword())) {
+        if (!requestDto.getPassword().equals(requestDto.getConfirmedPassword())) {
             throw new IllegalArgumentException(
                     messageSource.getMessage(
                             "not.correct.password.and.confirmed.password",
@@ -54,5 +54,30 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void login(AuthRequestDto loginRequestDto) {
+        User user = userRepository.findByNickname(loginRequestDto.getNickname()).orElseThrow(
+                () -> new IllegalArgumentException(
+                        messageSource.getMessage(
+                                "not.found.user",
+                                null,
+                                "Not found user",
+                                Locale.getDefault()
+                        )
+                )
+        );
+
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
+            new IllegalArgumentException(
+                    messageSource.getMessage(
+                            "not.correct.password",
+                            null,
+                            "not correct password",
+                            Locale.getDefault()
+                    )
+            );
+        }
     }
 }

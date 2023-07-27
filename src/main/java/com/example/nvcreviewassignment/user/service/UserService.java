@@ -12,12 +12,16 @@ import java.util.Locale;
 public interface UserService {
 
     /**
+     * 회원가입
      *
-     * @param requestDto
+     * @param requestDto 닉네임,비밀번호,비밀번호확인
      */
-    public void signup(AuthRequestDto requestDto);
+    void signup(AuthRequestDto requestDto);
 
-
-
-
+    /**
+     * 로그인
+     *
+     * @param loginRequestDto 로그인할 닉네임이랑 비밀번호
+     */
+    void login(AuthRequestDto loginRequestDto);
 }
