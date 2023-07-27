@@ -1,6 +1,5 @@
 package com.example.nvcreviewassignment.user.dto;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 

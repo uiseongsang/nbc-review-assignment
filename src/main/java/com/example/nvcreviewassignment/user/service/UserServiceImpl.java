@@ -1,5 +1,6 @@
 package com.example.nvcreviewassignment.user.service;
 
+import com.example.nvcreviewassignment.common.exception.FailLoginException;
 import com.example.nvcreviewassignment.user.dto.AuthRequestDto;
 import com.example.nvcreviewassignment.user.entity.User;
 import com.example.nvcreviewassignment.user.repository.UserRepository;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void login(AuthRequestDto loginRequestDto) {
         User user = userRepository.findByNickname(loginRequestDto.getNickname()).orElseThrow(
-                () -> new IllegalArgumentException(
+                () -> new FailLoginException(
                         messageSource.getMessage(
                                 "not.found.user",
                                 null,
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
         );
 
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
-            new IllegalArgumentException(
+            throw new FailLoginException(
                     messageSource.getMessage(
                             "not.correct.password",
                             null,
