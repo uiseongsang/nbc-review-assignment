@@ -2,6 +2,7 @@ package com.example.nvcreviewassignment.post.entity;
 
 import com.example.nvcreviewassignment.common.entity.Timestaped;
 import com.example.nvcreviewassignment.post.dto.PostRequestDto;
+import com.example.nvcreviewassignment.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,13 @@ public class Post extends Timestaped {
     @Column(nullable = false)
     private String nickname;
 
-    public Post(PostRequestDto requestDto) {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Post(PostRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.nickname = requestDto.getNickname();
+        this.user = user;
     }
 }
