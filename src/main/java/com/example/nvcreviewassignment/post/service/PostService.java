@@ -7,6 +7,7 @@ import com.example.nvcreviewassignment.post.dto.PostResponseDto;
 import com.example.nvcreviewassignment.post.entity.Post;
 import com.example.nvcreviewassignment.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -29,12 +30,29 @@ public class PostService {
         return new PostListResponseDto(postList);
     }
 
+    @Transactional
     public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, UserDetailsImpl userDetails) {
 
-        Post post = new Post(requestDto, userDetails.getUser());
+        Post post = new Post().builder()
+                .requestDto(requestDto)
+                .user(userDetails.getUser())
+                .build();
 
         postRepository.save(post);
 
         return new PostResponseDto(post);
+    }
+
+    public PostResponseDto getPostById(Long id) {
+        Post post = findPost(id);
+
+        return new PostResponseDto(post);
+    }
+
+    public Post findPost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("조회하신 게시글이 없습니다")
+        );
+        return post;
     }
 }
