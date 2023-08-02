@@ -6,7 +6,7 @@ import com.example.nvcreviewassignment.post.dto.PostRequestDto;
 import com.example.nvcreviewassignment.post.dto.PostResponseDto;
 import com.example.nvcreviewassignment.post.entity.Post;
 import com.example.nvcreviewassignment.post.repository.PostRepository;
-import com.example.nvcreviewassignment.post.repository.PostRepositoryQuery;
+import com.example.nvcreviewassignment.user.entity.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,10 +66,28 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+    @Transactional
+    public PostResponseDto updatePost(Long id, PostRequestDto requestDto,User user) {
+        Post post = findPost(id);
+
+        checkUser(user, post);
+
+        post.updatePost(requestDto.getTitle());
+
+        return new PostResponseDto(post);
+    }
+
     public Post findPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("조회하신 게시글이 없습니다")
         );
         return post;
+    }
+
+    public Boolean checkUser(User user, Post post) {
+        if(!post.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("작성자만 해당 게시글을 수정 할 수 있습니다");
+        }
+        return true;
     }
 }
