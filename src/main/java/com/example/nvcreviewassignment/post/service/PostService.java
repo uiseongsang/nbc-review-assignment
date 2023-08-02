@@ -6,6 +6,7 @@ import com.example.nvcreviewassignment.post.dto.PostRequestDto;
 import com.example.nvcreviewassignment.post.dto.PostResponseDto;
 import com.example.nvcreviewassignment.post.entity.Post;
 import com.example.nvcreviewassignment.post.repository.PostRepository;
+import com.example.nvcreviewassignment.post.repository.PostRepositoryQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +24,12 @@ public class PostService {
     }
 
     public PostListResponseDto getPosts() {
-        List<PostResponseDto> postList = postRepository.findAllByOrderByCreatedAtDesc().stream()
+        List<PostResponseDto> postList = postRepository.getPostList().stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
+//        List<PostResponseDto> postList = postRepository.findAllByOrderByCreatedAtDesc().stream()
+//                .map(PostResponseDto::new)
+//                .collect(Collectors.toList());
 
         return new PostListResponseDto(postList);
     }
