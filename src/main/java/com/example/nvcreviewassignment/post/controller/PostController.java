@@ -1,13 +1,18 @@
 package com.example.nvcreviewassignment.post.controller;
 
+import com.example.nvcreviewassignment.common.handler.ApiResponse;
 import com.example.nvcreviewassignment.common.security.UserDetailsImpl;
 import com.example.nvcreviewassignment.post.dto.PostListResponseDto;
 import com.example.nvcreviewassignment.post.dto.PostRequestDto;
 import com.example.nvcreviewassignment.post.dto.PostResponseDto;
 import com.example.nvcreviewassignment.post.service.PostService;
+import com.example.nvcreviewassignment.user.entity.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.RejectedExecutionException;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -75,5 +80,21 @@ public class PostController {
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         PostResponseDto res = postService.updatePost(id,requestDto,userDetails.getUser());
         return ResponseEntity.ok().body(res);
+    }
+
+    /**
+     * 게시글 삭제
+     * @param id 삭제할 게시글 번호
+     * @param userDetails 사용자 정보
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            postService.deletePost(id,userDetails.getUser());
+            return  ResponseEntity.ok().body( new ApiResponse("게시글 삭제 성공", HttpStatus.OK.value()));
+        } catch(RejectedExecutionException e) {
+            return ResponseEntity.badRequest().body( new ApiResponse("게시글 삭제 실패", HttpStatus.BAD_REQUEST.value()));
+        }
+
     }
 }

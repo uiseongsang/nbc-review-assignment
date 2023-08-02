@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,6 +78,15 @@ public class PostService {
         return new PostResponseDto(post);
     }
 
+    @Transactional
+    public void deletePost(Long id, User user) {
+        Post post = findPost(id);
+
+        checkUser(user,post);
+
+        postRepository.delete(post);
+    }
+
     public Post findPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(()
                 -> new IllegalArgumentException("조회하신 게시글이 없습니다")
@@ -86,7 +96,7 @@ public class PostService {
 
     public Boolean checkUser(User user, Post post) {
         if(!post.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("작성자만 해당 게시글을 수정 할 수 있습니다");
+            throw new RejectedExecutionException();
         }
         return true;
     }
