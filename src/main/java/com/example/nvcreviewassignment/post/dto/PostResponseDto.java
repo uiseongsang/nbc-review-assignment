@@ -2,6 +2,7 @@ package com.example.nvcreviewassignment.post.dto;
 
 import com.example.nvcreviewassignment.post.entity.Post;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    @Builder
     public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();

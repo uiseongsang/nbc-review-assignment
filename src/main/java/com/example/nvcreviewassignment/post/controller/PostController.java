@@ -5,7 +5,10 @@ import com.example.nvcreviewassignment.common.security.UserDetailsImpl;
 import com.example.nvcreviewassignment.post.dto.PostListResponseDto;
 import com.example.nvcreviewassignment.post.dto.PostRequestDto;
 import com.example.nvcreviewassignment.post.dto.PostResponseDto;
+import com.example.nvcreviewassignment.post.entity.Post;
 import com.example.nvcreviewassignment.post.service.PostService;
+import com.example.nvcreviewassignment.user.entity.User;
+import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,10 +25,20 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<PostListResponseDto> getPosts() {
-        PostListResponseDto postList = postService.getPosts();
+    public ResponseEntity<PostListResponseDto> getPostList() {
+        PostListResponseDto postList = postService.getPostList();
 
         return ResponseEntity.ok().body(postList);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<PostListResponseDto> getPostListByPage(@RequestParam("page") int page,
+                                                              @RequestParam("size") int size) {
+        // 페이징 처리: 1: 정렬 기준없이, 쌓인 데이터 순서대로 페이징 처리
+        PostListResponseDto postList = postService.getPostListByPage(page, size);
+
+        return ResponseEntity.ok().body(postList);
+
     }
 
     @GetMapping("/{id}")

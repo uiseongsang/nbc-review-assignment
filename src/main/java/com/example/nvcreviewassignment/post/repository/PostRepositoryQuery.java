@@ -8,5 +8,6 @@ import java.util.List;
 public interface PostRepositoryQuery {
 
     List<Post> getPostList();
+    List<Post> getPostListByPage(long offset, int pageSize);
 }
 

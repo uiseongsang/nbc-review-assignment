@@ -7,6 +7,7 @@ import com.example.nvcreviewassignment.post.dto.PostResponseDto;
 import com.example.nvcreviewassignment.post.entity.Post;
 import com.example.nvcreviewassignment.post.repository.PostRepository;
 import com.example.nvcreviewassignment.post.repository.PostRepositoryQuery;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,13 +24,25 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public PostListResponseDto getPosts() {
+    public PostListResponseDto getPostList() {
         List<PostResponseDto> postList = postRepository.getPostList().stream()
                 .map(PostResponseDto::new)
                 .collect(Collectors.toList());
 //        List<PostResponseDto> postList = postRepository.findAllByOrderByCreatedAtDesc().stream()
 //                .map(PostResponseDto::new)
 //                .collect(Collectors.toList());
+
+        return new PostListResponseDto(postList);
+    }
+
+    public PostListResponseDto getPostListByPage(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        List<PostResponseDto> postList = postRepository.getPostListByPage(pageRequest.getOffset(), pageRequest.getPageSize())
+                .stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
 
         return new PostListResponseDto(postList);
     }
