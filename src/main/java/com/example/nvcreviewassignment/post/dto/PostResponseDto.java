@@ -1,7 +1,6 @@
 package com.example.nvcreviewassignment.post.dto;
 
 import com.example.nvcreviewassignment.post.entity.Post;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 

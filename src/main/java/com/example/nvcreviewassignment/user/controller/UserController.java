@@ -2,18 +2,16 @@ package com.example.nvcreviewassignment.user.controller;
 
 import com.example.nvcreviewassignment.common.handler.ApiResponse;
 import com.example.nvcreviewassignment.common.jwt.JwtUtil;
-import com.example.nvcreviewassignment.common.security.UserDetailsImpl;
 import com.example.nvcreviewassignment.user.dto.AuthRequestDto;
-import com.example.nvcreviewassignment.user.entity.User;
-import com.example.nvcreviewassignment.user.repository.UserRepository;
 import com.example.nvcreviewassignment.user.service.UserService;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")

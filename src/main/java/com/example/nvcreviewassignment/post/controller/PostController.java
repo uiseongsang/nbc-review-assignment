@@ -6,7 +6,6 @@ import com.example.nvcreviewassignment.post.dto.PostListResponseDto;
 import com.example.nvcreviewassignment.post.dto.PostRequestDto;
 import com.example.nvcreviewassignment.post.dto.PostResponseDto;
 import com.example.nvcreviewassignment.post.service.PostService;
-import com.example.nvcreviewassignment.user.entity.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
