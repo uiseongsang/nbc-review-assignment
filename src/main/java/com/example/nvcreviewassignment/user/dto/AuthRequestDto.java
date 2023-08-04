@@ -1,9 +1,11 @@
 package com.example.nvcreviewassignment.user.dto;
 
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class AuthRequestDto {
 
     @Pattern(regexp = "^[a-z0-9]{3,}$",

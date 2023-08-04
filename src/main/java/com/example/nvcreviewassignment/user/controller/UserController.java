@@ -6,6 +6,7 @@ import com.example.nvcreviewassignment.user.dto.AuthRequestDto;
 import com.example.nvcreviewassignment.user.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-    private final JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
-    public UserController(UserService userService, JwtUtil jwtUtil) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.jwtUtil = jwtUtil;
+    }
+
+    public void setBeanFactory(BeanFactory context){
+        jwtUtil = (JwtUtil)context.getBean(JwtUtil.class);
     }
 
     @PostMapping("/signup")
